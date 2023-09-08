@@ -1,6 +1,6 @@
 # Welcome to python-flask-app
 
-to run the project locally, download or clone the repo and run `pip3 install -r requirements.txt` to install all dependencies. Then run `flask run` to run the app.
+to run the project locally, download or clone the repo and run `pip3 install -r requirements.txt` to install all dependencies. Then run `flask run` or `flask --debug run` to run the app.
 
 To generate [requirements.txt] I've used command propmt `pip3 freeze > requirements.txt`.
 
