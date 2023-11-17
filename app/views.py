@@ -179,3 +179,28 @@ def create_entry():
     res = make_response(jsonify({"message": "JSON received"}), 200)
 
     return "Thanks"
+
+@app.route("/query")
+def query():
+    if request.args:
+        args = request.args
+        for k, v in args.items():
+            print(f"{k}: {v}")
+        
+        if "foo" in args:
+            foo = args.get("foo")
+            print(foo)
+
+            args = request.args
+
+            if "title" in args:
+                title = request.args.get("title")
+                print(title)
+
+                serialized = ", ".join(f"{k}: {v}" for k, v in  args.items())
+                print(serialized)
+        return f"(Query) {serialized}", 200
+    
+    else:
+
+        return "Query not received", 400
