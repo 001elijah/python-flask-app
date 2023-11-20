@@ -1,0 +1,39 @@
+class Config(object):
+    DEBUG = False
+    TESTING = False
+
+    SECRET_KEY = "1jgjg01qweijq2nacvghaik4t"
+
+    DB_NAME = "prod-db"
+    DB_USERNAME = "root"
+    DB_PASSWORD = "password"
+
+    UPLOADS = "/home/username/app/app/static/images/uploads"
+
+    SESSION_COOKIE_SECURE = True
+
+
+class Production(Config):
+    pass
+
+
+class Development(Config):
+    DEBUG = True
+
+    DB_NAME = "dev-db"
+    DB_USERNAME = "root"
+    DB_PASSWORD = "password"
+
+    UPLOADS = "/home/username/projects/flask_test/app/app/static/images/uploads"
+
+    SESSION_COOKIE_SECURE = False
+
+
+class Testing(Config):
+    TESTING = True
+
+    DB_NAME = "dev-db"
+    DB_USERNAME = "root"
+    DB_PASSWORD = "password"
+
+    SESSION_COOKIE_SECURE = False

@@ -1,4 +1,7 @@
+import os
+
 from app import app
+
 
 from flask import render_template, request, redirect, jsonify, make_response
 
@@ -12,6 +15,8 @@ def clean_date(dt):
 
 @app.route("/")
 def hello():
+    print(f"Flask ENV is set to: {os.environ['FLASK_ENV']}")
+    print(f"Current Flask ENV is: {app.config['DB_NAME']}")
     return render_template("public/index.html")
 
 
@@ -165,13 +170,14 @@ def json():
 
         return res
 
+
 @app.route("/guestbook")
 def guestbook():
     return render_template("public/guestbook.html")
 
+
 @app.route("/guestbook/create-entry", methods=["POST"])
 def create_entry():
-
     req = request.get_json()
 
     print(req)
@@ -180,13 +186,14 @@ def create_entry():
 
     return "Thanks"
 
+
 @app.route("/query")
 def query():
     if request.args:
         args = request.args
         for k, v in args.items():
             print(f"{k}: {v}")
-        
+
         if "foo" in args:
             foo = args.get("foo")
             print(foo)
@@ -197,10 +204,9 @@ def query():
                 title = request.args.get("title")
                 print(title)
 
-                serialized = ", ".join(f"{k}: {v}" for k, v in  args.items())
+                serialized = ", ".join(f"{k}: {v}" for k, v in args.items())
                 print(serialized)
         return f"(Query) {serialized}", 200
-    
-    else:
 
+    else:
         return "Query not received", 400
