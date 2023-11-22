@@ -7,6 +7,8 @@ from flask import render_template, request, redirect, jsonify, make_response
 
 from datetime import datetime
 
+from werkzeug.utils import secure_filename
+
 
 @app.template_filter("clean_date")
 def clean_date(dt):
@@ -184,7 +186,7 @@ def create_entry():
 
     res = make_response(jsonify({"message": "JSON received"}), 200)
 
-    return "Thanks"
+    return res
 
 
 @app.route("/query")
@@ -210,3 +212,51 @@ def query():
 
     else:
         return "Query not received", 400
+
+def allowed_image_filesize(filesize):
+    if int(filesize) <= app.config["MAX_IMAGE_FILESIZE"]:
+        return True
+    else:
+        return False
+
+
+def allowed_image(filename):
+    if not "." in filename:
+        return False
+
+    ext = filename.rsplit(".", 1)[1]
+
+    if ext.upper() in app.config["ALLOWED_IMAGE_EXTENSIONS"]:
+        return True
+    else:
+        return False
+
+
+@app.route("/upload-image", methods=["GET", "POST"])
+def upload_image():
+    if request.method == "POST":
+        if request.files:
+            if not allowed_image_filesize(request.cookies.get("filesize")):
+                print("Maximum filesize exceeded")
+                return redirect(request.url)
+
+            image = request.files["image"]
+
+            if image.filename == "":
+                print("Must have a file name")
+                return redirect(request.url)
+
+            if not allowed_image(image.filename):
+                print("That image extension is not allowed")
+                return redirect(request.url)
+            else:
+                filename = secure_filename(image.filename)
+
+                image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+
+            print("Image saved")
+            
+            return redirect(request.url)
+        res = make_response(jsonify({"message": "Image saved"}), 200)
+        res.set_cookie("same-site-cookie", "foo", samesite="None")
+    return render_template("public/upload-image.html")

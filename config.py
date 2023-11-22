@@ -8,9 +8,12 @@ class Config(object):
     DB_USERNAME = "root"
     DB_PASSWORD = "password"
 
-    UPLOADS = "/home/username/app/app/static/images/uploads"
+    IMAGE_UPLOADS = "/Users/illiazolotukha/Documents/GitHub/python-flask-app/app/static/img/uploads"
+    ALLOWED_IMAGE_EXTENSIONS = ["PNG", "JPG", "JPEG", "GIF"]
+    MAX_IMAGE_FILESIZE = 0.5 * 1024 * 1024
 
     SESSION_COOKIE_SECURE = True
+
 
 
 class Production(Config):
