@@ -9,6 +9,8 @@ from datetime import datetime
 
 from werkzeug.utils import secure_filename
 
+from flask import send_from_directory, abort
+
 
 @app.template_filter("clean_date")
 def clean_date(dt):
@@ -213,6 +215,7 @@ def query():
     else:
         return "Query not received", 400
 
+
 def allowed_image_filesize(filesize):
     if int(filesize) <= app.config["MAX_IMAGE_FILESIZE"]:
         return True
@@ -255,8 +258,58 @@ def upload_image():
                 image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
 
             print("Image saved")
-            
+
             return redirect(request.url)
         res = make_response(jsonify({"message": "Image saved"}), 200)
         res.set_cookie("same-site-cookie", "foo", samesite="None")
     return render_template("public/upload-image.html")
+
+
+"""
+//converters//
+string:
+int:
+float:
+path:
+uuid:
+"""
+
+
+@app.route("/get-image/<image_name>")
+def get_image(image_name):
+    try:
+        return send_from_directory(
+            directory=app.config["CLIENT_IMAGES"], path=image_name, as_attachment=False
+        )
+    except FileNotFoundError:
+        abort(404)
+
+
+@app.route("/get-csv/<csv_name>")
+def get_csv(csv_name):
+    try:
+        return send_from_directory(
+            directory=app.config["CLIENT_CSV"], path=csv_name, as_attachment=False
+        )
+    except FileNotFoundError:
+        abort(404)
+
+
+@app.route("/get-pdf/<pdf_name>")
+def get_pdf(pdf_name):
+    try:
+        return send_from_directory(
+            directory=app.config["CLIENT_PDF"], path=pdf_name, as_attachment=False
+        )
+    except FileNotFoundError:
+        abort(404)
+
+
+@app.route("/get-report/<path:filepath>")
+def get_pdf(filepath):
+    try:
+        return send_from_directory(
+            directory=app.config["CLIENT_REPORTS"], path=filepath, as_attachment=True
+        )
+    except FileNotFoundError:
+        abort(404)

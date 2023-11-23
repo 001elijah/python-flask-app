@@ -12,6 +12,11 @@ class Config(object):
     ALLOWED_IMAGE_EXTENSIONS = ["PNG", "JPG", "JPEG", "GIF"]
     MAX_IMAGE_FILESIZE = 0.5 * 1024 * 1024
 
+    CLIENT_IMAGES = "/Users/illiazolotukha/Documents/GitHub/python-flask-app/app/static/client/img"
+    CLIENT_CSV = "/Users/illiazolotukha/Documents/GitHub/python-flask-app/app/static/client/csv"
+    CLIENT_PDF = "/Users/illiazolotukha/Documents/GitHub/python-flask-app/app/static/client/pdf"
+    CLIENT_REPORTS = "/Users/illiazolotukha/Documents/GitHub/python-flask-app/app/static/client/reports"
+
     SESSION_COOKIE_SECURE = True
 
 
